@@ -72,6 +72,7 @@ class VideoLooper:
         pygame.display.init()
         pygame.font.init()
         pygame.mouse.set_visible(False)
+        pygame.joystick.init()
         self._screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN | pygame.NOFRAME)
         self._size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
         self._bgimage = self._load_bgimage()
@@ -346,65 +347,22 @@ class VideoLooper:
                         self._print("s was pressed. stopping...")
                         self._playbackStopped = True
                         self._player.stop(3)
+            else if event.type == pygame.JOYBUTTONDOWN:
+                        self._player.play(Movie('K1.mp4'))
 
 
     def run(self):
         """Main program loop.  Will never return!"""
-        # Get playlist of movies to play from file reader.
-        playlist = self._build_playlist()
-        self._prepare_to_run_playlist(playlist)
-        self._set_hardware_volume()
-        movie = playlist.get_next(self._is_random)
         # Main loop to play videos in the playlist and listen for file changes.
         while self._running:
             # Load and play a new movie if nothing is playing.
             if not self._player.is_playing() and not self._playbackStopped:
-                if movie is not None: #just to avoid errors
-
-                    if movie.playcount >= movie.repeats:
-                        movie.clear_playcount()
-                        movie = playlist.get_next(self._is_random)
-                    elif self._player.can_loop_count() and movie.playcount > 0:
-                        movie.clear_playcount()
-                        movie = playlist.get_next(self._is_random)
-
-                    movie.was_played()
-
-                    if self._wait_time > 0 and not self._firstStart:
-                        self._print('Waiting for: {0} seconds'.format(self._wait_time))
-                        time.sleep(self._wait_time)
-                    self._firstStart = False
-
-                    #generating infotext
-                    if self._player.can_loop_count():
-                        infotext = '{0} time{1} (player counts loops)'.format(movie.repeats, "s" if movie.repeats>1 else "")
-                    else:
-                        infotext = '{0}/{1}'.format(movie.playcount, movie.repeats)
-                    if playlist.length()==1:
-                        infotext = '(endless loop)'
-
-                    # Start playing the first available movie.
-                    self._print('Playing movie: {0} {1}'.format(movie, infotext))
-                    # todo: maybe clear screen to black so that background (image/color) is not visible for videos with a resolution that is < screen resolution
-                    self._player.play(movie, loop=-1 if playlist.length()==1 else None, vol = self._sound_vol)
-
-            # Check for changes in the file search path (like USB drives added)
-            # and rebuild the playlist.
-            if self._reader.is_changed() and not self._playbackStopped:
-                self._print("reader changed, stopping player")
-                self._player.stop(3)  # Up to 3 second delay waiting for old 
-                                      # player to stop.
-                self._print("player stopped")
-                # Rebuild playlist and show countdown again (if OSD enabled).
-                playlist = self._build_playlist()
-                self._prepare_to_run_playlist(playlist)
-                self._set_hardware_volume()
-                movie = playlist.get_next(self._is_random)
+                self._player.play(Movie('loop.mp4'), True, vol = self._sound_vol)
 
             # Give the CPU some time to do other tasks. low values increase "responsiveness to changes" and reduce the pause between files
             # but increase CPU usage
             # since keyboard commands are handled in a seperate thread this sleeptime mostly influences the pause between files
-                        
+
             time.sleep(0.002)
 
     def quit(self):
