@@ -29,6 +29,7 @@ echo "Configuring video_looper to run on start..."
 echo "==========================================="
 
 cp ./assets/video_looper.conf /etc/supervisor/conf.d/
+cp ./assets/vlc.conf /etc/supervisor/conf.d/
 
 service supervisor restart
 
