@@ -28,7 +28,7 @@ class VlcPlayer:
         playing_index=self._vlc.playing_index()
         print("PLAY! Now paying " + playing_index)
         if playing_index == self.loop_index:
-            self._vlc.add(self.config.get('directory', 'path') + '/' + movie.filename)
+            self._vlc.enqueue(self.config.get('directory', 'path') + '/' + movie.filename)
             index=self._vlc.search(movie.filename)
             print("New index " + index)
             playing_index=index
