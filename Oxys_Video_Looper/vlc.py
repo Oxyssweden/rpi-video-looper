@@ -17,7 +17,7 @@ class VlcPlayer:
         self._vlc.connect()
         time.sleep(2)
         self._vlc.clear()
-        self._vlc.enqueue(config.get('directory', 'path') + '/' + config.get('video_looper', 'loop'))
+        self._vlc.add(config.get('directory', 'path') + '/' + config.get('video_looper', 'loop'))
         self._vlc.play()
         self._vlc.loop()
         self.loop_index = self._vlc.search(config.get('video_looper', 'loop'))
