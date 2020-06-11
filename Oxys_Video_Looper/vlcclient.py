@@ -190,6 +190,7 @@ class VLCClient(object):
         Sends a command to VLC and returns the text reply.
         This command may block.
         """
+        print(line)
         self.telnet.write((line + "\n").encode("utf-8"))
         return self.telnet.read_until(">".encode("utf-8"))[1:-3]
 
