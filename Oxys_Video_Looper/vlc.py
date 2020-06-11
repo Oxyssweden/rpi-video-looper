@@ -26,17 +26,17 @@ class VlcPlayer:
     def play(self, movie, **kwargs):
         """Play the provided movied file, if we are in the loop"""
         playing_index=self._vlc.playing_index()
-        print("PLAY! Now paying" + playing_index)
+        print("PLAY! Now paying " + playing_index)
         if playing_index == self.loop_index:
-            self._vlc.enqueue(self.config.get('directory', 'path') + '/' + movie.filename)
+            self._vlc.add(self.config.get('directory', 'path') + '/' + movie.filename)
             index=self._vlc.search(movie.filename)
             print("New index " + index)
-            self._vlc.goto(index)
             playing_index=index
             while playing_index==index:
                 time.sleep(2)
                 playing_index=self._vlc.playing_index()
 
+            print("Delete index " + index)
             self._vlc.delete(index)
 
     def is_playing(self):
