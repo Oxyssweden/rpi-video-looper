@@ -120,7 +120,7 @@ class VideoLooper:
 
 # Main entry point.
 if __name__ == '__main__':
-    print('Starting Adafruit Video Looper.')
+    print('Starting Oxys Video Looper.')
     # Default config path to /boot.
     config_path = '/boot/video_looper.ini'
     # Override config path if provided as parameter.

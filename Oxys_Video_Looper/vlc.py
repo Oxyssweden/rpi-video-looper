@@ -26,8 +26,6 @@ class VlcPlayer:
         if playing_index == self.loop_index:
             self._vlc.enqueue(self.config.get('directory', 'path') + '/' + movie.filename)
             index=self._vlc.search(movie.filename)
-            if index==None return
-
             self._vlc.goto(index)
             playlist=self._vlc.playlist()
             playing_index=index
