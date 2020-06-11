@@ -264,7 +264,7 @@ class VLCClient(object):
         """Start/Continue the current stream"""
         result=str(self._send_command("playlist"), 'utf-8')
         index=self.match_playing_index.search(result)
-        return index.group(1)
+        return None if index == None else index.group(1)
 
     def playlist(self):
         """Start/Continue the current stream"""
