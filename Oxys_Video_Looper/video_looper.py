@@ -111,7 +111,6 @@ class VideoLooper:
         self._running = False
         if self._player is not None:
             self._player.stop()
-        pygame.quit()
 
 
     def signal_quit(self, signal, frame):
