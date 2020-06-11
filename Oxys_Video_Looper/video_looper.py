@@ -67,7 +67,7 @@ class VideoLooper:
     def _load_player(self):
         """Load the configured video player and return an instance of it."""
         module = self._config.get('video_looper', 'video_player')
-        return importlib.import_module('.' + module, 'Adafruit_Video_Looper').create_player(self._config)
+        return importlib.import_module('.' + module, 'Oxys_Video_Looper').create_player(self._config)
 
     def _is_number(self, s):
         try:
