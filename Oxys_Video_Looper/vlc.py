@@ -13,7 +13,9 @@ class VlcPlayer:
         """
         self.config=config
         self._vlc = VLCClient('localhost')
+        time.sleep(2)
         self._vlc.connect()
+        time.sleep(2)
         self._vlc.loop()
         self._vlc.clear()
         self._vlc.enqueue(config.get('directory', 'path') + '/' + config.get('video_looper', 'loop'))
