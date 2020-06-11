@@ -52,6 +52,7 @@ class VideoLooper:
             raise RuntimeError('Failed to find configuration file at {0}, is the application properly installed?'.format(config_path))
         self._console_output = self._config.getboolean('video_looper', 'console_output')
         # Load other configuration values.
+        self._running = True
 
         # Load configured video player and file reader modules.
         self._player = self._load_player()
