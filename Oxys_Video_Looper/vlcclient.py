@@ -273,6 +273,7 @@ class VLCClient(object):
     def playlist(self):
         """Start/Continue the current stream"""
         result=self._send_command("playlist")
+        print(result)
         return self._parse_lines(result)
 
     def pause(self):
