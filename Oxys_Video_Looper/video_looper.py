@@ -91,7 +91,6 @@ class VideoLooper:
                     # BTN_PINKIE
 
     def run(self):
-        os.system('clear')  # For Linux/OS X
 
         """Main program loop.  Will never return!"""
         # Main loop to play videos in the playlist and listen for file changes.
