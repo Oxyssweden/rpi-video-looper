@@ -255,6 +255,9 @@ class VLCClient(object):
         """
         return self._send_command("seek {0}".format(second))
 
+    def goto(self, index):
+        return self._send_command("goto {0}".format(index))
+
     def play(self):
         """Start/Continue the current stream"""
         return self._send_command("play")
