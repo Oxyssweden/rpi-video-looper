@@ -30,7 +30,7 @@ class VlcPlayer:
             playlist=self._vlc.playlist()
             playing_index=index
             while playing_index==index:
-                sleep 2
+                time.sleep(2)
                 playing_index=self._vlc.playing_index()
 
             self._vlc.delete(index)
