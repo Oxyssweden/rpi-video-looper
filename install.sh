@@ -12,7 +12,7 @@ fi
 
 echo "Installing dependencies..."
 echo "=========================="
-apt update && apt -y install python3 python3-pip python3-pygame supervisor
+apt update && apt -y install python3 python3-pip supervisor
 
 echo "Installing video_looper program..."
 echo "=================================="
@@ -20,7 +20,7 @@ echo "=================================="
 # change the directoy to the script location
 cd "$(dirname "$0")"
 
-pip3 install setuptools
+pip3 install setuptools inputs
 python3 setup.py install --force
 
 cp ./assets/video_looper.ini /boot/video_looper.ini

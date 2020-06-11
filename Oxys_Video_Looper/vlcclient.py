@@ -128,6 +128,7 @@ from __future__ import print_function
 import sys
 import inspect
 import telnetlib
+import re
 
 DEFAULT_PORT = 4212
 
@@ -146,6 +147,7 @@ class VLCClient(object):
         self.telnet = None
         self.server_version = None
         self.server_version_tuple = ()
+        self.match_playing_index = re.compile('\|  \*(\d+)')
 
     def connect(self):
         """
@@ -191,6 +193,10 @@ class VLCClient(object):
         self.telnet.write((line + "\n").encode("utf-8"))
         return self.telnet.read_until(">".encode("utf-8"))[1:-3]
 
+
+    def _parse_lines(self, input):
+        return str(input, 'utf-8').split('\r\n')
+
     #
     # Commands
     #
@@ -233,6 +239,16 @@ class VLCClient(object):
         """
         return self._send_command("enqueue {0}".format(filename))
 
+    def delete(self, index):
+
+        return self._send_command("delete {0}".format(index))
+
+    def search(self, query):
+        result=str(self._send_command("search {0}".format(query)), 'utf-8')
+        pattern = re.compile('(\d+) - ' + query)
+        index = pattern.search(result)
+        return None if index == None else index.group(1)
+
     def seek(self, second):
         """
         Jump to a position at the current stream if supported.
@@ -243,9 +259,17 @@ class VLCClient(object):
         """Start/Continue the current stream"""
         return self._send_command("play")
 
+
+    def playing_index(self):
+        """Start/Continue the current stream"""
+        result=str(self._send_command("playlist"), 'utf-8')
+        index=self.match_playing_index.search(result)
+        return index.group(1)
+
     def playlist(self):
         """Start/Continue the current stream"""
-        return self._send_command("playlist")
+        result=self._send_command("playlist")
+        return self._parse_lines(result)
 
     def pause(self):
         """Pause playing"""
