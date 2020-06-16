@@ -12,6 +12,8 @@ import signal
 import time
 import threading
 from inputs import get_gamepad
+from gpiozero import LED
+
 
 
 from .model import Playlist, Movie
@@ -57,6 +59,10 @@ class VideoLooper:
         # Load configured video player and file reader modules.
         self._player = self._load_player()
 
+        # Init LEDs
+        self.init_leds()
+
+        # Set up USB button control
         self._keyboard_thread = threading.Thread(target=self._handle_keyboard_shortcuts, daemon=True)
         self._keyboard_thread.start()
 
@@ -83,6 +89,7 @@ class VideoLooper:
             for event in events:
                 if event.ev_type == 'Key' and event.state:
                     self._player.play(Movie( event.code + '.mp4'))
+                    print(event.code)
                     # BTN_TRIGGER
                     # BTN_THUMB
                     # BTN_THUMB2
@@ -101,8 +108,38 @@ class VideoLooper:
             # Give the CPU some time to do other tasks. low values increase "responsiveness to changes" and reduce the pause between files
             # but increase CPU usage
             # since keyboard commands are handled in a seperate thread this sleeptime mostly influences the pause between files
+            if self.led_state != self._player.playing_file:
+                if self._player.playing_file == 'LOOP':
+                    self.reset_leds()
+                else:
+                    self.single_led(self._player.playing_file)
+                    
+            time.sleep(0.5)
 
-            time.sleep(0.002)
+    def init_leds(self):
+        """Shut down the program"""
+        self.leds = {
+            'BTN_TRIGGER': LED(13)
+            'BTN_THUMB': LED(16)
+            'BTN_THUMB2': LED(19)
+            'BTN_TOP': LED(20)
+            'BTN_TRIGGER': LED(21)
+            'BTN_PINKIE': LED(26)
+        }
+        self.reset_leds()
+
+    def reset_leds(self):
+        self.led_state = 'LOOP'
+        for key in self.leds:
+            self.leds[key].on()
+
+    def single_led(self, led):
+        self.led_state = led
+        for key in self.leds:
+            if led = key:
+                self.leds[key].on()
+            else:
+                self.leds[key].off()
 
     def quit(self):
         """Shut down the program"""
