@@ -136,7 +136,7 @@ class VideoLooper:
     def single_led(self, led):
         self.led_state = led
         for key in self.leds:
-            if led = key:
+            if led == key:
                 self.leds[key].on()
             else:
                 self.leds[key].off()
