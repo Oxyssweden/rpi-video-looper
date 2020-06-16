@@ -246,6 +246,8 @@ class VLCClient(object):
 
     def search(self, query):
         result=str(self._send_command("search {0}".format(query)), 'utf-8')
+        # reset search
+        self._send_command("search")
         pattern = re.compile('(\d+) - ' + query)
         index = pattern.search(result)
         return None if index == None else index.group(1)
@@ -273,7 +275,6 @@ class VLCClient(object):
     def playlist(self):
         """Start/Continue the current stream"""
         result=self._send_command("playlist")
-        print(result)
         return self._parse_lines(result)
 
     def pause(self):

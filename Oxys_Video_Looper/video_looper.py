@@ -88,7 +88,7 @@ class VideoLooper:
             events = get_gamepad()
             for event in events:
                 if event.ev_type == 'Key' and event.state:
-                    self._player.play(Movie( event.code + '.mp4'))
+                    self._player.play(Movie( event.code ))
                     print(event.code)
                     # BTN_TRIGGER
                     # BTN_THUMB
@@ -119,26 +119,29 @@ class VideoLooper:
     def init_leds(self):
         """Shut down the program"""
         self.leds = {
-            'BTN_TRIGGER': LED(13),
-            'BTN_THUMB': LED(16),
-            'BTN_THUMB2': LED(19),
-            'BTN_TOP': LED(20),
-            'BTN_TRIGGER': LED(21),
-            'BTN_PINKIE': LED(26)
+            'BTN_TRIGGER': LED(21), # 1 Orange
+            'BTN_THUMB': LED(20), # 2 Green striped
+            'BTN_THUMB2': LED(16), # 3 Green
+            'BTN_TOP': LED(13), # 4 Blue striped
+            'BTN_TOP2': LED(19), # 5 Blue
+            'BTN_PINKIE': LED(26) # 6 Brown striped
         }
         self.reset_leds()
 
     def reset_leds(self):
         self.led_state = 'LOOP'
+        print('ALL LED ON!')
         for key in self.leds:
             self.leds[key].on()
 
     def single_led(self, led):
+        print('SINGLE LED: ' + led)
         self.led_state = led
         for key in self.leds:
             if led == key:
                 self.leds[key].on()
             else:
+                print(key + ' off')
                 self.leds[key].off()
 
     def quit(self):

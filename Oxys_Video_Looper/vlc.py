@@ -28,15 +28,15 @@ class VlcPlayer:
     def play(self, movie, **kwargs):
         """Play the provided movied file, if we are in the loop"""
         self.playing_index=self._vlc.playing_index()
-        print("PLAY! Now paying " + playing_index)
-        if playing_index == self.loop_index:
-            self._vlc.enqueue(self.config.get('directory', 'path') + '/' + movie.filename)
+        print("PLAY! Now paying " + self.playing_index)
+        if self.playing_index == self.loop_index:
+            self._vlc.add(self.config.get('directory', 'path') + '/' + movie.filename  + '.mp4')
             self.ensure_loop()
             index=self._vlc.search(movie.filename)
             print("New index " + index)
             self.playing_index=index
             self.playing_file=movie.filename
-            while playing_index==index:
+            while self.playing_index==index:
                 time.sleep(2)
                 self.playing_index=self._vlc.playing_index()
 
@@ -52,11 +52,14 @@ class VlcPlayer:
         self._vlc.stop()
 
     def ensure_loop(self):
+        has_loop=self._vlc.search(self.config.get('video_looper', 'loop'))
         # Make sure we have the loop after this
-        if not self._vlc.search(config.get('video_looper', 'loop')) {
-            self._vlc.enqueue(config.get('directory', 'path') + '/' + config.get('video_looper', 'loop'))
-            self.loop_index = self._vlc.search(config.get('video_looper', 'loop'))
-        }
+        if not has_loop:
+            print('No loop exists')
+            self._vlc.enqueue(self.config.get('directory', 'path') + '/' + self.config.get('video_looper', 'loop'))
+            self.loop_index = self._vlc.search(self.config.get('video_looper', 'loop'))
+        else:
+            print('Loop exists at:' + has_loop)
 
     @staticmethod
     def can_loop_count():
