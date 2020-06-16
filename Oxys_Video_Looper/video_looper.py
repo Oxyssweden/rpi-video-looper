@@ -113,17 +113,17 @@ class VideoLooper:
                     self.reset_leds()
                 else:
                     self.single_led(self._player.playing_file)
-                    
+
             time.sleep(0.5)
 
     def init_leds(self):
         """Shut down the program"""
         self.leds = {
-            'BTN_TRIGGER': LED(13)
-            'BTN_THUMB': LED(16)
-            'BTN_THUMB2': LED(19)
-            'BTN_TOP': LED(20)
-            'BTN_TRIGGER': LED(21)
+            'BTN_TRIGGER': LED(13),
+            'BTN_THUMB': LED(16),
+            'BTN_THUMB2': LED(19),
+            'BTN_TOP': LED(20),
+            'BTN_TRIGGER': LED(21),
             'BTN_PINKIE': LED(26)
         }
         self.reset_leds()
